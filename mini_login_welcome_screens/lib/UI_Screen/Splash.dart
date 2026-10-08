@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_login_welcome_screens/UI_Screen/Welcome_screen.dart';
 
 class Splash extends StatefulWidget{
   @override
@@ -6,6 +7,17 @@ class Splash extends StatefulWidget{
 }
 
 class _SplashState extends State<Splash> {
+  @override
+  void initState(){
+    super.initState();
+    Future.delayed( Duration(seconds: 6), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => WelcomeScreen(),
+        ),
+      );
+    });
+  }
   @override
   Widget build(BuildContext context) {
    return Scaffold(
@@ -18,7 +30,7 @@ class _SplashState extends State<Splash> {
            end: Alignment.bottomCenter,
            colors: [
              Colors.white,
-             Color(0xFFD5EAF4)//.withOpacity(0.50),
+             Color(0xFFD5EAF4),
            ],
          ),
        ),
@@ -36,14 +48,27 @@ class _SplashState extends State<Splash> {
                    fontWeight: FontWeight.bold
                  ),),
                SizedBox(height: 40,),
-              // Image.asset("assets/images/-Image 2026-10-08 at 12.14.56 AM(1)(1).png",),
                TweenAnimationBuilder<double>(
                  tween: Tween<double>(begin: 0.0, end: 1.0),
-                 duration: const Duration(seconds: 3),
+                 duration:  Duration(seconds: 8),
                  builder: (context, value, child) {
-                   double opacityValue = value <= 0.5 ? (1.0 - (value * 2)) : ((value - 0.5) * 2);
-                   double rotationValue = value * 6.28;
-
+                   double rotationValue = 0.0;
+                   double opacityValue = 1.0;
+                   if (value <= 0.25) {
+                     rotationValue = 0.0;
+                     opacityValue = 1.0;
+                   } else if (value > 0.25 && value <= 0.50) {
+                     double p = (value - 0.25) / 0.25;
+                     rotationValue = p * 6.28;
+                     opacityValue = p <= 0.5 ? (1.0 - (p * 2)) : ((p - 0.5) * 2);
+                   } else if (value > 0.50 && value <= 0.75) {
+                     rotationValue = 0.0;
+                     opacityValue = 1.0;
+                   } else {
+                     double p = (value - 0.75) / 0.25;
+                     rotationValue = p * 6.28;
+                     opacityValue = p <= 0.5 ? (1.0 - (p * 2)) : ((p - 0.5) * 2);
+                   }
                    return Column(
                      children: [
                        Opacity(
@@ -51,9 +76,7 @@ class _SplashState extends State<Splash> {
                          child: Transform.rotate(
                            angle: rotationValue,
                            child: Image.asset(
-                             "assets/images/-Image 2026-10-08 at 12.14.56 AM(1)(1).png" ,
-                             //height: 240,
-                             //fit: BoxFit.contain,
+                             "assets/images/-Image 2026-10-08 at 12.14.56 AM(1)(1).png",
                            ),
                          ),
                        ),
@@ -109,18 +132,18 @@ class _SplashState extends State<Splash> {
                          child: Stack(
                            children: [
                              Container(
-                               color: const Color(0xFFE0E0E0),
+                               color: Color(0xFFE0E0E0),
                              ),
                              AnimatedContainer(
-                               duration: const Duration(milliseconds: 1),
-                               child: const LinearProgressIndicator(
+                               duration: Duration(milliseconds: 1),
+                               child:  LinearProgressIndicator(
                                  backgroundColor: Colors.transparent,
                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.transparent),
                                ),
                              ),
                              ShaderMask(
                                blendMode: BlendMode.srcIn,
-                               shaderCallback: (bounds) => const LinearGradient(
+                               shaderCallback: (bounds) => LinearGradient(
                                  begin: Alignment.centerLeft,
                                  end: Alignment.centerRight,
                                  colors: [
@@ -128,7 +151,7 @@ class _SplashState extends State<Splash> {
                                    Color(0xFF81C784),
                                  ],
                                ).createShader(bounds),
-                               child: const LinearProgressIndicator(
+                               child:LinearProgressIndicator(
                                  backgroundColor: Colors.transparent,
                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                  minHeight: 3.5,
@@ -139,7 +162,7 @@ class _SplashState extends State<Splash> {
                        ),
                      ),
                      const SizedBox(height: 12),
-                     const Text(
+                     Text(
                        'Preparing Your Health...',
                        style: TextStyle(
                          fontSize: 12,
