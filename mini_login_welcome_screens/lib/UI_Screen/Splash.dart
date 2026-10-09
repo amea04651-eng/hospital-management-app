@@ -40,6 +40,7 @@ class _SplashState extends State<Splash> {
             padding: const EdgeInsets.symmetric(vertical: 70),
             child: Column(
               children: [
+                Text("Mohammed"),
                 Image.asset("assets/images/7c2f57a9-2c62-48d5-8175-fdd5e2cbd353(1).png",height: 120,),
                 Text("Healix",
                   style: TextStyle(
